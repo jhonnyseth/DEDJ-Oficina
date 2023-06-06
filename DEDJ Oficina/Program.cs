@@ -17,10 +17,10 @@ namespace DEDJ
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Form2 form2 = new Form2();
-            if (form2.ShowDialog() == DialogResult.OK)
+            Login form4 = new Login();
+            if (form4.ShowDialog() == DialogResult.OK)
             {
-                Application.Run(new Form1());
+                Application.Run(new Principal());
             }
 
         }

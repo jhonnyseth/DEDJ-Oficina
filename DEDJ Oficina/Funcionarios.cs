@@ -11,47 +11,45 @@ using System.Windows.Forms;
 
 namespace DEDJ_Oficina
 {
-    public partial class Form1 : Form
+    public partial class Funcionarios : Form
     {
         private string connectionString = "Data Source=SETH;Initial Catalog=DEDJ Oficina;Integrated Security=True"; // Substitua pelos dados da sua conexão
 
-        public Form1()
+        public Funcionarios()
         {
             InitializeComponent();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            AtualizarDataGridViewClientes();
+            AtualizarDataGridViewFuncionarios();
         }
 
         private void btnCriar_Click(object sender, EventArgs e)
         {
             string nome = txtNome.Text;
-            string email = txtEmail.Text;
             string senha = txtSenha.Text;
 
-            if (CriarCliente(nome, email, senha))
+            if (CriarFuncionarios(nome, senha))
             {
-                MessageBox.Show("Cliente criado com sucesso!");
+                MessageBox.Show("Funcionario Cadastrado com Sucesso!");
                 LimparCampos();
-                AtualizarDataGridViewClientes();
+                AtualizarDataGridViewFuncionarios();
             }
             else
             {
-                MessageBox.Show("Erro ao criar o cliente.");
+                MessageBox.Show("Erro ao criar o cadastro.");
             }
         }
 
-        private bool CriarCliente(string nome, string email, string senha)
+        private bool CriarFuncionarios(string nome, string senha)
         {
-            string query = "INSERT INTO dbo.Cadastro (Nome, Email, Senha) VALUES (@Nome, @Email, @Senha)"; // Substitua pelos dados da sua tabela
+            string query = "INSERT INTO dbo.Funcionarios (Nome, Senha) VALUES (@Nome, @Senha)"; // Substitua pelos dados da sua tabela
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Nome", nome);
-                command.Parameters.AddWithValue("@Email", email);
                 command.Parameters.AddWithValue("@Senha", senha);
 
                 try
@@ -71,34 +69,34 @@ namespace DEDJ_Oficina
 
         private void btnExcluir_Click(object sender, EventArgs e)
         {
-            if (dgvClientes.SelectedRows.Count > 0)
+            if (dgvFuncionarios.SelectedRows.Count > 0)
             {
-                int idCliente = Convert.ToInt32(dgvClientes.SelectedRows[0].Cells["ClienteID"].Value);
+                int idFuncionario = Convert.ToInt32(dgvFuncionarios.SelectedRows[0].Cells["FuncionarioID"].Value);
 
-                if (ExcluirCliente(idCliente))
+                if (ExcluirFuncionarios(idFuncionario))
                 {
-                    MessageBox.Show("Cliente excluído com sucesso!");
-                    AtualizarDataGridViewClientes();
+                    MessageBox.Show("Funcionario excluído com sucesso!");
+                    AtualizarDataGridViewFuncionarios();
                 }
                 else
                 {
-                    MessageBox.Show("Erro ao excluir o cliente.");
+                    MessageBox.Show("Erro ao excluir o Funcionario.");
                 }
             }
             else
             {
-                MessageBox.Show("Selecione um cliente para excluir.");
+                MessageBox.Show("Selecione um Funcionario para excluir.");
             }
         }
 
-        private bool ExcluirCliente(int idCliente)
+        private bool ExcluirFuncionarios(int idFuncionario)
         {
-            string query = "DELETE FROM dbo.Cadastro WHERE ClienteID = @ClienteID"; // Substitua pelos dados da sua tabela
+            string query = "DELETE FROM dbo.Funcionarios WHERE FuncionarioID = @FuncionarioID"; // Substitua pelos dados da sua tabela
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@ClienteID", idCliente);
+                command.Parameters.AddWithValue("@FuncionarioID", idFuncionario);
 
                 try
                 {
@@ -118,13 +116,12 @@ namespace DEDJ_Oficina
         private void LimparCampos()
         {
             txtNome.Text = "";
-            txtEmail.Text = "";
             txtSenha.Text = "";
         }
 
-        private void AtualizarDataGridViewClientes()
+        private void AtualizarDataGridViewFuncionarios()
         {
-            string query = "SELECT ClienteID, Nome, Email, Senha FROM dbo.Cadastro"; // Substitua pelos dados da sua tabela
+            string query = "SELECT FuncionarioID, Nome, Senha FROM dbo.Funcionarios"; // Substitua pelos dados da sua tabela
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -134,7 +131,7 @@ namespace DEDJ_Oficina
                 try
                 {
                     adapter.Fill(dataTable);
-                    dgvClientes.DataSource = dataTable;
+                    dgvFuncionarios.DataSource = dataTable;
                 }
                 catch (Exception ex)
                 {

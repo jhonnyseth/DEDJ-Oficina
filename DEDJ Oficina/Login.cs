@@ -11,11 +11,11 @@ using System.Windows.Forms;
 
 namespace DEDJ_Oficina
 {
-    public partial class Form2 : Form
+    public partial class Login : Form
     {
         private string connectionString = "Data Source=SETH;Initial Catalog=DEDJ Oficina;Integrated Security=True"; // Substitua pelos dados da sua conexão
 
-        public Form2()
+        public Login()
         {
             InitializeComponent();
         }
@@ -50,7 +50,7 @@ namespace DEDJ_Oficina
 
         private bool VerificarCredenciais(string nome, string senha)
         {
-            string query = "SELECT COUNT(*) FROM dbo.Cadastro WHERE Nome = @Nome AND Senha = @Senha"; // Substitua pelos dados da sua tabela
+            string query = "SELECT COUNT(*) FROM dbo.Funcionarios WHERE Nome = @Nome AND Senha = @Senha"; // Substitua pelos dados da sua tabela
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
